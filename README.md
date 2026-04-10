@@ -33,20 +33,18 @@ A high-performance, edge-optimized professional portfolio built to demonstrate m
 
 ## Getting Started
 
-    Clone & Install:
-    Bash
+### Clone & Install:
 
     git clone https://github.com/CiobanDaniel/my-portfolio.git
     cd portfolio
     npm install
 
-    Environment Setup:
-    Create a .dev.vars file in the root:
-    Plaintext
+### Environment Setup:
+
+Create a .dev.vars file in the root:
 
     BREVO_API_KEY=your_api_key_here
 
-    Run Development Server:
-    Bash
+### Run Development Server:
 
     npm run dev
