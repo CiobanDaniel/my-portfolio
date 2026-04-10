@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { FormEvent, useState, useTransition } from "react";
 import { motion, Variants } from "framer-motion";
 import { Send, Code2, Cpu, Globe } from "lucide-react";
 import { SiGithub } from "react-icons/si";
@@ -33,12 +33,16 @@ export default function Home() {
   const [state, setState] = useState<FormState | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     setState(null);
     startTransition(async () => {
       try {
         await sendEmail(formData);
         setState({ success: true });
+        form.reset();
       } catch {
         setState({
           success: false,
@@ -174,7 +178,7 @@ export default function Home() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          action={handleSubmit}
+          onSubmit={handleSubmit}
           className="space-y-4"
         >
           {["name", "email"].map((field) => (
