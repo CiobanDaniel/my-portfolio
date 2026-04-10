@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useState, useTransition } from "react";
 import { motion, Variants } from "framer-motion";
 import { Send, Code2, Cpu, Globe } from "lucide-react";
 import { SiGithub } from "react-icons/si";
@@ -30,20 +30,23 @@ const stagger: Variants = {
 };
 
 export default function Home() {
-  const [state, formAction, isPending] = useActionState(
-    async (_: unknown, formData: FormData) => {
+  const [state, setState] = useState<FormState | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = (formData: FormData) => {
+    setState(null);
+    startTransition(async () => {
       try {
         await sendEmail(formData);
-        return { success: true } satisfies FormState;
+        setState({ success: true });
       } catch {
-        return {
+        setState({
           success: false,
           error: "Message could not be sent. Please try again in a moment.",
-        } satisfies FormState;
+        });
       }
-    },
-    null as FormState | null
-  );
+    });
+  };
 
   return (
     <main className="min-h-screen text-slate-200 bg-[#050505] overflow-x-hidden">
@@ -171,7 +174,7 @@ export default function Home() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          action={formAction}
+          action={handleSubmit}
           className="space-y-4"
         >
           {["name", "email"].map((field) => (
