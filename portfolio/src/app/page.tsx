@@ -39,15 +39,12 @@ export default function Home() {
     const formData = new FormData(form);
     setState(null);
     startTransition(async () => {
-      try {
-        await sendEmail(formData);
+      const result = await sendEmail(formData);
+      if (result.ok) {
         setState({ success: true });
         form.reset();
-      } catch {
-        setState({
-          success: false,
-          error: "Message could not be sent. Please try again in a moment.",
-        });
+      } else {
+        setState({ success: false, error: result.error });
       }
     });
   };
