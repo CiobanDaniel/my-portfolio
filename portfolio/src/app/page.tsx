@@ -27,6 +27,45 @@ const stagger: Variants = {
   },
 };
 
+const stackItems = [
+  {
+    icon: Code2,
+    title: "Programming",
+    text: "C/C++, C#, Python, Java",
+  },
+  {
+    icon: Globe,
+    title: "Web",
+    text: "ASP.NET Core, scalable systems",
+  },
+  {
+    icon: Cpu,
+    title: "Embedded",
+    text: "ARM Cortex, drivers, hardware control",
+  },
+];
+
+const projects = [
+  {
+    title: "Portfolio Platform",
+    text: "Edge-deployed portfolio with contact workflow and clean CI/CD.",
+    tags: ["Next.js", "Cloudflare", "Brevo"],
+    href: "https://github.com/CiobanDaniel/my-portfolio",
+  },
+  {
+    title: "Embedded Control Module",
+    text: "Low-level firmware and driver integration for hardware control.",
+    tags: ["C/C++", "ARM Cortex", "Drivers"],
+    href: "#contact",
+  },
+  {
+    title: "Scalable API Service",
+    text: "Backend service focused on maintainability and throughput.",
+    tags: ["ASP.NET Core", "API Design", "Performance"],
+    href: "#contact",
+  },
+];
+
 export default function Home() {
   const [state, setState] = useState<FormState | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -207,21 +246,7 @@ export default function Home() {
           viewport={{ once: true }}
           className="grid md:grid-cols-3 gap-6"
         >
-          {[{
-            icon: Code2,
-            title: "Programming",
-            text: "C/C++, C#, Python, Java",
-          },
-          {
-            icon: Globe,
-            title: "Web",
-            text: "ASP.NET Core, scalable systems",
-          },
-          {
-            icon: Cpu,
-            title: "Embedded",
-            text: "ARM Cortex, drivers, hardware control",
-          }].map(({ icon: Icon, title, text }) => (
+          {stackItems.map(({ icon: Icon, title, text }) => (
             <motion.div
               key={title}
               variants={fadeUp}
@@ -273,20 +298,7 @@ export default function Home() {
           viewport={{ once: true }}
           className="grid md:grid-cols-3 gap-6"
         >
-          {[
-            {
-              title: "Portfolio Platform",
-              text: "Edge-deployed portfolio with contact workflow and clean CI/CD.",
-            },
-            {
-              title: "Embedded Control Module",
-              text: "Low-level firmware and driver integration for hardware control.",
-            },
-            {
-              title: "Scalable API Service",
-              text: "Backend service focused on maintainability and throughput.",
-            },
-          ].map((project) => (
+          {projects.map((project) => (
             <motion.article
               key={project.title}
               variants={fadeUp}
@@ -301,6 +313,30 @@ export default function Home() {
                 {project.title}
               </h3>
               <p className={`text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>{project.text}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className={`text-xs px-2 py-1 rounded-full border ${
+                      isDark
+                        ? "border-slate-600 text-slate-300"
+                        : "border-slate-300 text-slate-600"
+                    }`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <a
+                href={project.href}
+                target={project.href.startsWith("http") ? "_blank" : undefined}
+                rel={project.href.startsWith("http") ? "noreferrer" : undefined}
+                className={`inline-flex mt-5 text-sm font-medium ${
+                  isDark ? "text-cyan-400 hover:text-cyan-300" : "text-cyan-700 hover:text-cyan-600"
+                }`}
+              >
+                View project
+              </a>
             </motion.article>
           ))}
         </motion.div>
