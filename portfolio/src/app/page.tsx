@@ -2,7 +2,7 @@
 
 import { FormEvent, useState, useTransition } from "react";
 import { motion, Variants } from "framer-motion";
-import { Send, Code2, Cpu, Globe } from "lucide-react";
+import { Send, Code2, Cpu, Globe, Moon, Sun } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 type FormState = {
   success: boolean;
@@ -30,6 +30,7 @@ const stagger: Variants = {
 export default function Home() {
   const [state, setState] = useState<FormState | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [isDark, setIsDark] = useState(false);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -64,40 +65,82 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen text-slate-800 bg-slate-50 overflow-x-hidden">
+    <main
+      className={`min-h-screen overflow-x-hidden transition-colors ${
+        isDark ? "text-slate-100 bg-slate-950" : "text-slate-800 bg-slate-50"
+      }`}
+    >
 
       {/* Background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#64748b_1px,transparent_1px)] [background-size:24px_24px]" />
+        <div
+          className={`absolute inset-0 [background-size:24px_24px] ${
+            isDark
+              ? "opacity-20 bg-[radial-gradient(#94a3b8_1px,transparent_1px)]"
+              : "opacity-40 bg-[radial-gradient(#64748b_1px,transparent_1px)]"
+          }`}
+        />
         <motion.div
           animate={{ x: [0, 50, 0], y: [0, -50, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
-          className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-400/30 blur-[140px] rounded-full"
+          className={`absolute top-[-10%] left-[-10%] w-[50%] h-[50%] blur-[140px] rounded-full ${
+            isDark ? "bg-cyan-500/15" : "bg-cyan-400/30"
+          }`}
         />
         <motion.div
           animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
           transition={{ duration: 25, repeat: Infinity }}
-          className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-violet-400/30 blur-[120px] rounded-full"
+          className={`absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] blur-[120px] rounded-full ${
+            isDark ? "bg-violet-500/15" : "bg-violet-400/30"
+          }`}
         />
       </div>
 
       {/* Nav */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200/70">
+      <nav
+        className={`fixed top-0 w-full z-50 backdrop-blur-xl border-b ${
+          isDark
+            ? "bg-slate-950/70 border-slate-800"
+            : "bg-white/80 border-slate-200/70"
+        }`}
+      >
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <span className="font-bold text-lg uppercase tracking-tight text-slate-900">
+          <span
+            className={`font-bold text-lg uppercase tracking-tight ${
+              isDark ? "text-slate-100" : "text-slate-900"
+            }`}
+          >
             DANIEL<span className="text-cyan-600">CIOBAN</span>
           </span>
-          <div className="hidden md:flex gap-6 text-sm text-slate-600">
-            {["About", "Stack", "Contact"].map((item) => (
+          <div
+            className={`hidden md:flex gap-6 text-sm ${
+              isDark ? "text-slate-300" : "text-slate-600"
+            }`}
+          >
+            {["About", "Stack", "Projects", "Contact"].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="hover:text-slate-900 transition-colors"
+                className={`transition-colors ${
+                  isDark ? "hover:text-white" : "hover:text-slate-900"
+                }`}
               >
                 {item}
               </a>
             ))}
           </div>
+          <button
+            type="button"
+            onClick={() => setIsDark((prev) => !prev)}
+            className={`p-2 rounded-lg border transition ${
+              isDark
+                ? "border-slate-700 bg-slate-900 text-slate-100"
+                : "border-slate-200 bg-white text-slate-700"
+            }`}
+            aria-label="Toggle theme"
+          >
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
         </div>
       </nav>
 
@@ -115,7 +158,9 @@ export default function Home() {
 
           <motion.h1
             variants={fadeUp}
-            className="text-5xl md:text-7xl font-bold leading-tight mb-6 text-slate-900"
+            className={`text-5xl md:text-7xl font-bold leading-tight mb-6 ${
+              isDark ? "text-slate-100" : "text-slate-900"
+            }`}
           >
             Building clean, scalable
             <br />
@@ -124,7 +169,7 @@ export default function Home() {
 
           <motion.p
             variants={fadeUp}
-            className="text-slate-600 text-lg mb-8"
+            className={`text-lg mb-8 ${isDark ? "text-slate-300" : "text-slate-600"}`}
           >
             Focused on web architecture and embedded systems. I build
             performant software with clean structure and low-level control.
@@ -136,13 +181,22 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
               aria-label="Open GitHub profile"
-              className="p-3 rounded-full bg-white/70 hover:bg-white border border-slate-200 transition shadow-sm"
+              className={`p-3 rounded-full border transition shadow-sm ${
+                isDark
+                  ? "bg-slate-900 hover:bg-slate-800 border-slate-700"
+                  : "bg-white/70 hover:bg-white border-slate-200"
+              }`}
             >
               <SiGithub size={20} />
             </a>
           </motion.div>
         </motion.div>
       </section>
+      <div
+        className={`max-w-6xl mx-auto px-6 ${
+          isDark ? "border-t border-slate-800" : "border-t border-slate-200"
+        }`}
+      />
 
       {/* Stack */}
       <section id="stack" className="py-20 px-6 max-w-6xl mx-auto">
@@ -172,15 +226,90 @@ export default function Home() {
               key={title}
               variants={fadeUp}
               whileHover={{ y: -4 }}
-              className="p-6 rounded-2xl bg-white/70 border border-slate-200 hover:border-cyan-300 transition shadow-sm hover:shadow-md"
+              className={`p-6 rounded-2xl transition shadow-sm hover:shadow-md ${
+                isDark
+                  ? "bg-slate-900/80 border border-slate-700 hover:border-cyan-700"
+                  : "bg-white/70 border border-slate-200 hover:border-cyan-300"
+              }`}
             >
               <Icon className="text-cyan-600 mb-4" />
-              <h3 className="text-lg font-semibold mb-2 text-slate-900">{title}</h3>
-              <p className="text-slate-600 text-sm">{text}</p>
+              <h3 className={`text-lg font-semibold mb-2 ${isDark ? "text-slate-100" : "text-slate-900"}`}>{title}</h3>
+              <p className={`text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>{text}</p>
             </motion.div>
           ))}
         </motion.div>
       </section>
+      <div
+        className={`max-w-6xl mx-auto px-6 ${
+          isDark ? "border-t border-slate-800" : "border-t border-slate-200"
+        }`}
+      />
+
+      {/* Projects */}
+      <section id="projects" className="py-20 px-6 max-w-6xl mx-auto">
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="mb-8"
+        >
+          <motion.h2
+            variants={fadeUp}
+            className={`text-3xl md:text-4xl font-bold mb-3 ${
+              isDark ? "text-slate-100" : "text-slate-900"
+            }`}
+          >
+            Selected projects
+          </motion.h2>
+          <motion.p variants={fadeUp} className={isDark ? "text-slate-300" : "text-slate-600"}>
+            A few examples of systems I have built recently.
+          </motion.p>
+        </motion.div>
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="grid md:grid-cols-3 gap-6"
+        >
+          {[
+            {
+              title: "Portfolio Platform",
+              text: "Edge-deployed portfolio with contact workflow and clean CI/CD.",
+            },
+            {
+              title: "Embedded Control Module",
+              text: "Low-level firmware and driver integration for hardware control.",
+            },
+            {
+              title: "Scalable API Service",
+              text: "Backend service focused on maintainability and throughput.",
+            },
+          ].map((project) => (
+            <motion.article
+              key={project.title}
+              variants={fadeUp}
+              whileHover={{ y: -4 }}
+              className={`p-6 rounded-2xl transition shadow-sm hover:shadow-md ${
+                isDark
+                  ? "bg-slate-900/80 border border-slate-700"
+                  : "bg-white/70 border border-slate-200"
+              }`}
+            >
+              <h3 className={`text-lg font-semibold mb-2 ${isDark ? "text-slate-100" : "text-slate-900"}`}>
+                {project.title}
+              </h3>
+              <p className={`text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>{project.text}</p>
+            </motion.article>
+          ))}
+        </motion.div>
+      </section>
+      <div
+        className={`max-w-6xl mx-auto px-6 ${
+          isDark ? "border-t border-slate-800" : "border-t border-slate-200"
+        }`}
+      />
 
       {/* Contact */}
       <section id="contact" className="py-20 px-6 max-w-2xl mx-auto">
@@ -190,35 +319,47 @@ export default function Home() {
           whileInView="show"
           viewport={{ once: true }}
           onSubmit={handleSubmit}
-          className="space-y-5 rounded-3xl bg-white/80 border border-slate-200 p-6 md:p-8 shadow-lg"
+          className={`space-y-5 rounded-3xl p-6 md:p-8 shadow-lg ${
+            isDark
+              ? "bg-slate-900/80 border border-slate-700"
+              : "bg-white/80 border border-slate-200"
+          }`}
         >
           <motion.div variants={fadeUp} className="mb-2">
-            <h2 className="text-2xl font-semibold text-slate-900">Contact me</h2>
-            <p className="text-slate-600 text-sm">
+            <h2 className={`text-2xl font-semibold ${isDark ? "text-slate-100" : "text-slate-900"}`}>Contact me</h2>
+            <p className={`text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>
               Share your project idea and I will get back to you.
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-4">
             <motion.label variants={fadeUp} className="space-y-2 block">
-              <span className="text-sm font-medium text-slate-700">Name</span>
+              <span className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-700"}`}>Name</span>
               <input
                 name="name"
                 type="text"
                 placeholder="Your full name"
-                className="w-full p-3 bg-white border border-slate-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none"
+                className={`w-full p-3 rounded-xl outline-none ${
+                  isDark
+                    ? "bg-slate-950 border border-slate-700 text-slate-100 focus:border-cyan-500"
+                    : "bg-white border border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+                }`}
                 autoComplete="name"
                 required
               />
             </motion.label>
 
             <motion.label variants={fadeUp} className="space-y-2 block">
-              <span className="text-sm font-medium text-slate-700">Email</span>
+              <span className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-700"}`}>Email</span>
               <input
                 name="email"
                 type="email"
                 placeholder="you@example.com"
-                className="w-full p-3 bg-white border border-slate-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none"
+                className={`w-full p-3 rounded-xl outline-none ${
+                  isDark
+                    ? "bg-slate-950 border border-slate-700 text-slate-100 focus:border-cyan-500"
+                    : "bg-white border border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+                }`}
                 autoComplete="email"
                 required
               />
@@ -226,22 +367,30 @@ export default function Home() {
           </div>
 
           <motion.label variants={fadeUp} className="space-y-2 block">
-            <span className="text-sm font-medium text-slate-700">Subject</span>
+            <span className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-700"}`}>Subject</span>
             <input
               name="subject"
               type="text"
               placeholder="What is this about?"
-              className="w-full p-3 bg-white border border-slate-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none"
+              className={`w-full p-3 rounded-xl outline-none ${
+                isDark
+                  ? "bg-slate-950 border border-slate-700 text-slate-100 focus:border-cyan-500"
+                  : "bg-white border border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+              }`}
             />
           </motion.label>
 
           <motion.label variants={fadeUp} className="space-y-2 block">
-            <span className="text-sm font-medium text-slate-700">Message</span>
+            <span className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-700"}`}>Message</span>
             <textarea
               name="message"
               rows={5}
               placeholder="Tell me about your project, timeline, or goals..."
-              className="w-full p-3 bg-white border border-slate-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none resize-y"
+              className={`w-full p-3 rounded-xl outline-none resize-y ${
+                isDark
+                  ? "bg-slate-950 border border-slate-700 text-slate-100 focus:border-cyan-500"
+                  : "bg-white border border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+              }`}
               required
             />
           </motion.label>
@@ -267,7 +416,7 @@ export default function Home() {
         </motion.form>
       </section>
 
-      <footer className="py-10 text-center text-slate-600 text-sm">
+      <footer className={`py-10 text-center text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>
         © {new Date().getFullYear()} Daniel Cioban
       </footer>
     </main>
