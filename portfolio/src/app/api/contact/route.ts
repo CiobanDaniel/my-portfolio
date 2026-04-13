@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 type ContactPayload = {
   name?: string;
   email?: string;
+  subject?: string;
   message?: string;
 };
 
@@ -26,6 +27,7 @@ export async function POST(request: Request) {
   const payload = (await request.json()) as ContactPayload;
   const name = payload.name?.trim() ?? "";
   const email = payload.email?.trim() ?? "";
+  const subject = payload.subject?.trim() || "Portfolio Contact";
   const message = payload.message?.trim() ?? "";
 
   if (!name || !email || !message) {
@@ -76,7 +78,7 @@ export async function POST(request: Request) {
         email: senderEmail,
       },
       to: [{ email: receiverEmail }],
-      subject: `New Portfolio Message from ${name}`,
+      subject: `${subject} — from ${name}`,
       textContent: `Sender: ${email}\n\nMessage: ${message}`,
     }),
   });

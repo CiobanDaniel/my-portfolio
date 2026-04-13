@@ -38,6 +38,7 @@ export default function Home() {
     const payload = {
       name: String(formData.get("name") ?? ""),
       email: String(formData.get("email") ?? ""),
+      subject: String(formData.get("subject") ?? ""),
       message: String(formData.get("message") ?? ""),
     };
 
@@ -63,35 +64,35 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen text-slate-200 bg-[#050505] overflow-x-hidden">
+    <main className="min-h-screen text-slate-800 bg-slate-50 overflow-x-hidden">
 
       {/* Background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:26px_26px]" />
+        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#64748b_1px,transparent_1px)] [background-size:24px_24px]" />
         <motion.div
           animate={{ x: [0, 50, 0], y: [0, -50, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
-          className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 blur-[140px] rounded-full"
+          className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-400/30 blur-[140px] rounded-full"
         />
         <motion.div
           animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
           transition={{ duration: 25, repeat: Infinity }}
-          className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600/10 blur-[120px] rounded-full"
+          className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-violet-400/30 blur-[120px] rounded-full"
         />
       </div>
 
       {/* Nav */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-xl bg-black/40 border-b border-white/5">
+      <nav className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200/70">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <span className="font-bold text-lg uppercase tracking-tight">
-            DANIEL<span className="text-blue-500">CIOBAN</span>
+          <span className="font-bold text-lg uppercase tracking-tight text-slate-900">
+            DANIEL<span className="text-cyan-600">CIOBAN</span>
           </span>
-          <div className="hidden md:flex gap-6 text-sm text-slate-400">
+          <div className="hidden md:flex gap-6 text-sm text-slate-600">
             {["About", "Stack", "Contact"].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="hover:text-white transition-colors"
+                className="hover:text-slate-900 transition-colors"
               >
                 {item}
               </a>
@@ -108,13 +109,13 @@ export default function Home() {
           animate="show"
           className="max-w-3xl"
         >
-          <motion.p variants={fadeUp} className="text-blue-500 text-xs tracking-[0.3em] uppercase mb-4">
+          <motion.p variants={fadeUp} className="text-cyan-700 text-xs tracking-[0.3em] uppercase mb-4">
             Software Engineer
           </motion.p>
 
           <motion.h1
             variants={fadeUp}
-            className="text-5xl md:text-7xl font-bold leading-tight mb-6"
+            className="text-5xl md:text-7xl font-bold leading-tight mb-6 text-slate-900"
           >
             Building clean, scalable
             <br />
@@ -123,7 +124,7 @@ export default function Home() {
 
           <motion.p
             variants={fadeUp}
-            className="text-slate-400 text-lg mb-8"
+            className="text-slate-600 text-lg mb-8"
           >
             Focused on web architecture and embedded systems. I build
             performant software with clean structure and low-level control.
@@ -135,7 +136,7 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
               aria-label="Open GitHub profile"
-              className="p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition"
+              className="p-3 rounded-full bg-white/70 hover:bg-white border border-slate-200 transition shadow-sm"
             >
               <SiGithub size={20} />
             </a>
@@ -170,71 +171,103 @@ export default function Home() {
             <motion.div
               key={title}
               variants={fadeUp}
-              whileHover={{ scale: 1.04 }}
-              className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-blue-500/40 transition"
+              whileHover={{ y: -4 }}
+              className="p-6 rounded-2xl bg-white/70 border border-slate-200 hover:border-cyan-300 transition shadow-sm hover:shadow-md"
             >
-              <Icon className="text-blue-500 mb-4" />
-              <h3 className="text-lg font-semibold mb-2">{title}</h3>
-              <p className="text-slate-400 text-sm">{text}</p>
+              <Icon className="text-cyan-600 mb-4" />
+              <h3 className="text-lg font-semibold mb-2 text-slate-900">{title}</h3>
+              <p className="text-slate-600 text-sm">{text}</p>
             </motion.div>
           ))}
         </motion.div>
       </section>
 
       {/* Contact */}
-      <section id="contact" className="py-20 px-6 max-w-xl mx-auto">
+      <section id="contact" className="py-20 px-6 max-w-2xl mx-auto">
         <motion.form
           variants={stagger}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
           onSubmit={handleSubmit}
-          className="space-y-4"
+          className="space-y-5 rounded-3xl bg-white/80 border border-slate-200 p-6 md:p-8 shadow-lg"
         >
-          {["name", "email"].map((field) => (
-            <motion.input
-              key={field}
-              variants={fadeUp}
-              name={field}
-              type={field === "email" ? "email" : "text"}
-              placeholder={field === "email" ? "Email address" : "Your name"}
-              className="w-full p-3 bg-black/40 border border-white/10 rounded-xl focus:border-blue-500 outline-none"
-              autoComplete={field === "email" ? "email" : "name"}
+          <motion.div variants={fadeUp} className="mb-2">
+            <h2 className="text-2xl font-semibold text-slate-900">Contact me</h2>
+            <p className="text-slate-600 text-sm">
+              Share your project idea and I will get back to you.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.label variants={fadeUp} className="space-y-2 block">
+              <span className="text-sm font-medium text-slate-700">Name</span>
+              <input
+                name="name"
+                type="text"
+                placeholder="Your full name"
+                className="w-full p-3 bg-white border border-slate-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none"
+                autoComplete="name"
+                required
+              />
+            </motion.label>
+
+            <motion.label variants={fadeUp} className="space-y-2 block">
+              <span className="text-sm font-medium text-slate-700">Email</span>
+              <input
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                className="w-full p-3 bg-white border border-slate-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none"
+                autoComplete="email"
+                required
+              />
+            </motion.label>
+          </div>
+
+          <motion.label variants={fadeUp} className="space-y-2 block">
+            <span className="text-sm font-medium text-slate-700">Subject</span>
+            <input
+              name="subject"
+              type="text"
+              placeholder="What is this about?"
+              className="w-full p-3 bg-white border border-slate-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none"
+            />
+          </motion.label>
+
+          <motion.label variants={fadeUp} className="space-y-2 block">
+            <span className="text-sm font-medium text-slate-700">Message</span>
+            <textarea
+              name="message"
+              rows={5}
+              placeholder="Tell me about your project, timeline, or goals..."
+              className="w-full p-3 bg-white border border-slate-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none resize-y"
               required
             />
-          ))}
-
-          <motion.textarea
-            variants={fadeUp}
-            name="message"
-            rows={4}
-            placeholder="Tell me about your project..."
-            className="w-full p-3 bg-black/40 border border-white/10 rounded-xl focus:border-blue-500 outline-none"
-            required
-          />
+          </motion.label>
 
           <motion.button
             variants={fadeUp}
             whileTap={{ scale: 0.97 }}
             type="submit"
             disabled={isPending}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-xl flex items-center justify-center gap-2"
+            className="w-full py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl flex items-center justify-center gap-2 font-medium disabled:opacity-70"
           >
-            {isPending ? "Sending..." : "Send"} <Send size={16} />
+            {isPending ? "Sending..." : "Send message"} <Send size={16} />
           </motion.button>
 
           {state?.success && (
-            <p className="text-emerald-400 text-center text-sm">
+            <p className="text-emerald-600 text-center text-sm">
               Message sent successfully.
             </p>
           )}
           {state?.success === false && state.error && (
-            <p className="text-rose-400 text-center text-sm">{state.error}</p>
+            <p className="text-rose-600 text-center text-sm">{state.error}</p>
           )}
         </motion.form>
       </section>
 
-      <footer className="py-10 text-center text-slate-500 text-sm">
+      <footer className="py-10 text-center text-slate-600 text-sm">
         © {new Date().getFullYear()} Daniel Cioban
       </footer>
     </main>
