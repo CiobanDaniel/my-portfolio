@@ -21,9 +21,9 @@ A high-performance, edge-optimized professional portfolio built to demonstrate m
 .
 ├── src/
 │   └── app/
-│       ├── actions.ts      # Fullstack Server Actions (Email logic)
-│       ├── layout.tsx      # Fonts, Metadata, and Global CSS
-│       └── page.tsx        # Main Portfolio UI & Animations
+│       ├── api/contact/route.ts  # Contact API endpoint (Brevo)
+│       ├── layout.tsx            # Fonts, Metadata, and Global CSS
+│       └── page.tsx              # Main Portfolio UI & Animations
 ├── public/                 # Static assets (Images, Favicons)
 ├── wrangler.jsonc          # Cloudflare Deployment Configuration
 ├── open-next.config.ts     # Next.js ↔ Cloudflare Adapter settings
@@ -44,6 +44,9 @@ A high-performance, edge-optimized professional portfolio built to demonstrate m
 Create a .dev.vars file in the root:
 
     BREVO_API_KEY=your_api_key_here
+    BREVO_SENDER_EMAIL=verified_sender@yourdomain.com
+    BREVO_TO_EMAIL=your_inbox@yourdomain.com
+    BREVO_SENDER_NAME=Portfolio Bot
 
 ### Run Development Server:
 

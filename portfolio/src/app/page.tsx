@@ -4,8 +4,6 @@ import { FormEvent, useState, useTransition } from "react";
 import { motion, Variants } from "framer-motion";
 import { Send, Code2, Cpu, Globe } from "lucide-react";
 import { SiGithub } from "react-icons/si";
-import { sendEmail } from "./actions";
-
 type FormState = {
   success: boolean;
   error?: string;
@@ -37,14 +35,29 @@ export default function Home() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const payload = {
+      name: String(formData.get("name") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      message: String(formData.get("message") ?? ""),
+    };
+
     setState(null);
     startTransition(async () => {
-      const result = await sendEmail(formData);
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = (await response.json()) as { ok: boolean; error?: string };
+
       if (result.ok) {
         setState({ success: true });
         form.reset();
       } else {
-        setState({ success: false, error: result.error });
+        setState({
+          success: false,
+          error: result.error ?? "Message could not be sent right now.",
+        });
       }
     });
   };
