@@ -56,13 +56,13 @@ const projects = [
     title: "Embedded Control Module",
     text: "Low-level firmware and driver integration for hardware control.",
     tags: ["C/C++", "ARM Cortex", "Drivers"],
-    href: "#contact",
+    href: "https://github.com/CiobanDaniel/Embedded-project---Internship-2025.git",
   },
   {
-    title: "Scalable API Service",
-    text: "Backend service focused on maintainability and throughput.",
-    tags: ["ASP.NET Core", "API Design", "Performance"],
-    href: "#contact",
+    title: "Android Calendar App",
+    text: "Calendar application built with Kotlin, using Firebase for user data and Google Sign-In authentication.",
+    tags: ["Kotlin", "Firebase", "Google Sign-In"],
+    href: "https://github.com/CiobanDaniel/CalendarCMO.git",
   },
 ];
 
